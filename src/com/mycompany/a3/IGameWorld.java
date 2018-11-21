@@ -13,4 +13,7 @@ public interface IGameWorld{
 	public void paintAll(Graphics g, Point pCmpRelPrnt);
 	public IIterator getIterator();
 	public boolean isPaused();
+	public void playExplosion();
+	public void explodePS();
+	public void remove(GameObject obj);
 }

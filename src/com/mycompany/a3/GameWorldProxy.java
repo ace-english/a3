@@ -54,4 +54,22 @@ public class GameWorldProxy extends Observable implements IGameWorld {
 		return gw.isPaused();
 	}
 
+	@Override
+	public void playExplosion() {
+		gw.playExplosion();
+		
+	}
+
+	@Override
+	public void explodePS() {
+		gw.explodePS();
+		
+	}
+
+	@Override
+	public void remove(GameObject obj) {
+		gw.remove(obj);
+		
+	}
+
 }

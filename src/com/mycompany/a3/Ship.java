@@ -1,5 +1,7 @@
 package com.mycompany.a3;
 
+import java.util.Vector;
+
 import com.codename1.ui.Graphics;
 import com.codename1.ui.geom.Point;
 
@@ -7,6 +9,7 @@ public abstract class Ship extends MoveableObject implements ICollider{
 	protected MissileLauncher missileLauncher;
 	private int missileCount;
 	private int maxMissiles;
+	private Vector<ICollider> collisions;
 	
 	/**
 	 * Checks to see if ship can fire a missile.
@@ -58,9 +61,26 @@ public abstract class Ship extends MoveableObject implements ICollider{
 	 * returns true if the distance is less than the sum of the radii
 	 */
 	@Override
-	public boolean collidesWith(ICollider otherObject) {
+	public boolean collidesWith(ICollider otherObject, IGameWorld gw) {
 		GameObject check = (GameObject) otherObject;
-		return Util.findDistance(this, check)<=((getSize()/2+check.getSize()/2));
+		boolean collides= Util.findDistance(this, check)<=((getSize()/2+check.getSize()/2));
+		if(collides) {
+			if(!collisions.contains(otherObject)) {
+				collisions.add(otherObject);
+				handleCollision(otherObject, gw);
+			}
+		}
+		else {
+			if(collisions.contains(otherObject)) {
+				collisions.remove(otherObject);
+			}
+		}
+		return collides;
+	}
+
+	@Override
+	public Vector<ICollider> getCollisions() {
+		return collisions;
 	}
 	
 	@Override

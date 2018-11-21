@@ -1,5 +1,7 @@
 package com.mycompany.a3;
 
+import java.util.Vector;
+
 import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.geom.Point;
@@ -8,8 +10,10 @@ public class Asteroid extends MoveableObject implements ISelectable, ICollider{
 	static int MAX_SIZE = 300;
 	static int MIN_SIZE = 60;
 	private boolean selected;
+	private Vector<ICollider> collisions;
 	
 	public Asteroid(){
+		collisions=new Vector<ICollider>();
 		setX(Util.randomInt(0, Util.getMaxWidth()));
 		setY(Util.randomInt(0, Util.getMaxHeight()));
 		setHeading(Util.randomInt(0, 360));
@@ -53,21 +57,33 @@ public class Asteroid extends MoveableObject implements ISelectable, ICollider{
 	 * Asteroids should blow up no matter what they hit
 	 */
 	@Override
-	public boolean handleCollision(ICollider otherObject, GameWorld gw) {
+	public void handleCollision(ICollider otherObject, IGameWorld gw) {
 		gw.playExplosion();
+		gw.remove(this);
 		if(otherObject instanceof PlayerShip) {
 			gw.explodePS();
 		}
-		return true;
 	}
 
 	/**
 	 * returns true if the distance is less than the sum of the radii
 	 */
 	@Override
-	public boolean collidesWith(ICollider otherObject) {
+	public boolean collidesWith(ICollider otherObject, IGameWorld gw) {
 		GameObject check = (GameObject) otherObject;
-		return Util.findDistance(this, check)<=((getSize()/2+check.getSize()/2));
+		boolean collides= Util.findDistance(this, check)<=((getSize()/2+check.getSize()/2));
+		if(collides) {
+			if(!collisions.contains(otherObject)) {
+				collisions.add(otherObject);
+				handleCollision(otherObject, gw);
+			}
+		}
+		else {
+			if(collisions.contains(otherObject)) {
+				collisions.remove(otherObject);
+			}
+		}
+		return collides;
 	}
 
 	@Override
@@ -89,6 +105,11 @@ public class Asteroid extends MoveableObject implements ISelectable, ICollider{
 		if ( (px >= xLoc) && (px <= xLoc+getSize())
 		&& (py >= yLoc) && (py <= yLoc+getSize()) )
 		return true; else return false;
+	}
+
+	@Override
+	public Vector<ICollider> getCollisions() {
+		return collisions;
 	}
 	
 }

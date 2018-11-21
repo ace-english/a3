@@ -58,10 +58,10 @@ public class NPS extends Ship{
 	}
 
 	/**
-	 * NPS should be destroyed if it collides with a 
+	 * NPS should be destroyed if it collides with a ship, missile, or asteroid.
 	 */
 	@Override
-	public boolean handleCollision(ICollider otherObject, GameWorld gw) {
+	public void handleCollision(ICollider otherObject, 	IGameWorld gw) {
 		boolean destroy=false;
 		//System.out.println("NPS collided with "+otherObject);
 		if(otherObject instanceof Asteroid) {
@@ -84,7 +84,6 @@ public class NPS extends Ship{
 				restock();
 			}
 		}
-		return destroy;
 		
 	}
 	
