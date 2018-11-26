@@ -15,7 +15,10 @@ public class AddAsteroidCommand extends Command {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		gw.add(Util.ObjectType.Asteroid);
+		 if (e.getKeyEvent() != -1) { 
+			 gw.add(Util.ObjectType.Asteroid);
+			 System.out.println("Added asteroid");
+		 }
 	}
 
 }

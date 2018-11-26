@@ -26,34 +26,7 @@ public class PlayerShip extends Ship implements ISteerable{
 		setX(Util.getMaxWidth()/2);
 		setY(Util.getMaxHeight()/2);
 	}
-	
 
-	@Override
-	public boolean move(int elapsedTime) {
-		double x, y;
-		x=Math.cos(Math.toRadians(90-getHeading()))*getSpeed()*(elapsedTime/10);
-		y=Math.sin(Math.toRadians(90-getHeading()))*getSpeed()*(elapsedTime/10);
-		
-		if(getY()+y<=getSize()/2) {	//north edge
-			setY(Util.getMaxHeight()-getSize()/2);
-		}
-		else if(getY()+y>=Util.getMaxHeight()-getSize()/2) {	//south edge
-			setY(getSize()/2);
-		}
-		else
-			setY(getY()+y);
-		if(getX()+x>=Util.getMaxWidth()-getSize()/2) {	//east edge
-			setX(getSize()/2);
-		}
-		else if(getX()+x<=getSize()/2) {	//west edge
-			setX(Util.getMaxWidth()-getSize()/2);
-		}
-		else
-			setX(getX()+x);
-		
-		
-		return true;
-	}
 
 	/**
 	 * returns reference to static PlayerShip
@@ -100,11 +73,10 @@ public class PlayerShip extends Ship implements ISteerable{
 		setHeading(getHeading()+interval);
 	}
 	
+	
 	@Override
 	public boolean collidesWith(ICollider otherObject) {
 		boolean collision =super.collidesWith(otherObject);
-		if(collision)
-			System.out.println("PS collided with "+otherObject);
 		return collision;
 	}
 	

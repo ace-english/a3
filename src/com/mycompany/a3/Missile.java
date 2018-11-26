@@ -6,6 +6,7 @@ import com.codename1.ui.geom.Point;
 public abstract class Missile extends MoveableObject implements ICollider, ISelectable{
 	private int fuelLevel;
 	private static int SPEED_INCREMENT = 10;
+	public static final int MISSILE_MAX_FUEL = 30;
 	private boolean selected;
 	
 	/**
@@ -16,12 +17,9 @@ public abstract class Missile extends MoveableObject implements ICollider, ISele
 	Missile(MissileLauncher ml){
 		setSpeed(ml.getSpeed()+SPEED_INCREMENT);
 		setHeading(ml.getHeading());
-		//System.out.println("Missile initalized with heading of "+getHeading());
 		setX(ml.getX()+(ml.getSize()*Math.cos(Math.toRadians(90-ml.getHeading()))));
 		setY(ml.getY()+(ml.getSize()*Math.sin(Math.toRadians(90-ml.getHeading()))));
-		//setX(ml.getX());
-		//setY(ml.getY()+ml.getSize());
-		fuelLevel=Util.MISSILE_MAX_FUEL;
+		fuelLevel=MISSILE_MAX_FUEL;
 		setSize(30);
 		selected=false;
 	}
@@ -34,20 +32,7 @@ public abstract class Missile extends MoveableObject implements ICollider, ISele
 	public boolean move(int elapsedTime) {
 		if(fuelLevel<=0)
 			return false;
-		double x, y;
-		x=Math.cos(Math.toRadians(90-getHeading()))*getSpeed()*(elapsedTime/10);
-		y=Math.sin(Math.toRadians(90-getHeading()))*getSpeed()*(elapsedTime/10);
-		
-		if(getY()<=getSize()/2||getY()>=Util.getMaxHeight()-getSize()/2) {	//verticle edge
-			return false;
-		}
-		if(getX()<=getSize()/2||getX()>=Util.getMaxWidth()-getSize()/2) {	//horizontal edge
-			return false;
-		}
-		
-		setX(getX()+x);
-		setY(getY()+y);
-			
+		super.move(elapsedTime);
 		fuelLevel--;
 		return true;
 	}
@@ -79,7 +64,7 @@ public abstract class Missile extends MoveableObject implements ICollider, ISele
 	}
 
 	public void refuel() {
-		fuelLevel=Util.MISSILE_MAX_FUEL;
+		fuelLevel=MISSILE_MAX_FUEL;
 	}
 
 	@Override
@@ -93,6 +78,10 @@ public abstract class Missile extends MoveableObject implements ICollider, ISele
 		return selected;
 	}
 
+	/**
+	 * Used for Selectable
+	 * Checks to see if point touched overlaps with Missile
+	 */
 	@Override
 	public boolean contains(Point pPtrRelPrnt, Point pCmpRelPrnt) {
 		int px = pPtrRelPrnt.getX(); // pointer location relative to

@@ -14,7 +14,9 @@ public class AimLeftCommand extends Command {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		gw.aimLeft();
+		 if (e.getKeyEvent() != -1) {
+			 gw.aimLeft();
+		 }
 	}
 
 }

@@ -20,7 +20,6 @@ public class MapView extends Container implements Observer {
 	public void update(Observable observable, Object data) {
 		gw = (GameWorldProxy) data;
 		this.repaint();
-		//System.out.println(gw.printAll());
 	}
 	
 	@Override

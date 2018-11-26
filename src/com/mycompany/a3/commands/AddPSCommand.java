@@ -16,8 +16,10 @@ public class AddPSCommand extends Command {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if(gw.findAll(Util.ObjectType.PlayerShip).isEmpty())
-			gw.add(PlayerShip.getNewPS());
+		 if (e.getKeyEvent() != -1) { 
+			if(gw.findAll(Util.ObjectType.PlayerShip).isEmpty())
+				gw.add(PlayerShip.getNewPS());
+		}
 	}
 
 }

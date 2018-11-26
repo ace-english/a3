@@ -15,7 +15,9 @@ public class AddStationCommand extends Command {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		gw.add(Util.ObjectType.Station);
+		 if (e.getKeyEvent() != -1) { 
+			 gw.add(Util.ObjectType.Station);
+		 }
 	}
 
 }

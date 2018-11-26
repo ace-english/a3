@@ -15,6 +15,7 @@ public class FirePSCommand extends Command {
 	
 	public void actionPerformed(ActionEvent e) {
 		gw.firePS();
+		System.out.println("Firing missile from player ship");
 	}
 
 }

@@ -14,7 +14,10 @@ public class IncreaseSpeedCommand extends Command {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		gw.increaseSpeed();
+		 if (e.getKeyEvent() != -1) { 
+			 gw.increaseSpeed();
+			 System.out.println("Speed increased");
+		 }
 	}
 
 }

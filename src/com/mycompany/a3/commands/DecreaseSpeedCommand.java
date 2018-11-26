@@ -14,7 +14,10 @@ public class DecreaseSpeedCommand extends Command {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		gw.decreaseSpeed();
+		 if (e.getKeyEvent() != -1) { 
+			 gw.decreaseSpeed();
+			 System.out.println("Speed decreased.");
+		 }
 	}
 
 }

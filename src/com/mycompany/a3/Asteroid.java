@@ -80,6 +80,11 @@ public class Asteroid extends MoveableObject implements ISelectable, ICollider{
 		return selected;
 	}
 
+
+	/**
+	 * Used for Selectable
+	 * Checks to see if point touched overlaps with Missile
+	 */
 	@Override
 	public boolean contains(Point pPtrRelPrnt, Point pCmpRelPrnt) {
 		int px = pPtrRelPrnt.getX(); // pointer location relative to

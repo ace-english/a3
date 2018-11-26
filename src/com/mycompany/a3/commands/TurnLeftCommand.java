@@ -14,7 +14,9 @@ public class TurnLeftCommand extends Command {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		gw.turnLeft();
+		 if (e.getKeyEvent() != -1) { 
+			 gw.turnLeft();
+			 System.out.println("Turning left");
+		 }
 	}
-
 }

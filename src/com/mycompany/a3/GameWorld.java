@@ -17,7 +17,6 @@ public class GameWorld extends Observable implements IGameWorld{
 	private int score, lives, time;
 	private Sound playerExplode, explode, playerShoot, enemyShoot, restock, noAmmo, gameOver;
 	private boolean sound, pause;
-	//private GameObject selectedObject;
 	
 	BGSound music;
 	
@@ -41,7 +40,7 @@ public class GameWorld extends Observable implements IGameWorld{
 		objectList = new GameCollection();
 		setPaused(false);
 		
-		
+		objectList.add(PlayerShip.getPS());
 		
 		if(sound) {
 			music.run();
@@ -114,31 +113,49 @@ public class GameWorld extends Observable implements IGameWorld{
 	 * @param gameobject
 	 */
 	public void add(Util.ObjectType type) {
-		switch (type) {
-		case Asteroid:
-			objectList.add(new Asteroid());
-			break;
-		case NPS:
-			NPS nps = new NPS();
-			objectList.add(nps);
-			break;
-		case PlayerShip:
-			//verify that we don't already have a PS
-			if(findAll(Util.ObjectType.PlayerShip).isEmpty()) {
-				objectList.add(PlayerShip.getPS());
+		GameObject newObject=null;
+		boolean valid=false;
+		while(!valid) {
+			switch (type) {
+			case Asteroid:
+				newObject=new Asteroid();
+				break;
+			case NPS:
+				newObject=new NPS();
+				break;
+			case PlayerShip:
+				//verify that we don't already have a PS
+				if(findAll(Util.ObjectType.PlayerShip).isEmpty()) {
+					newObject=PlayerShip.getPS();
+				}
+				else{
+					System.err.println("Error: player ship already exists.");
+				}
+				break;
+			case Station:
+				newObject=new Station();
+				break;
+			default:
+				System.err.println("Invalid input.");
+				return;
 			}
-			else{
-				System.err.println("Error: player ship already exists.");
+			//If a collision is detected, redo initialization
+			ICollider current=(ICollider) newObject;
+			//inner loop to check for collisions with all other objects
+			valid=true;
+			IIterator it2 = objectList.getIterator();
+			while (it2.hasNext()) {
+				GameObject checkNext = (GameObject) it2.getNext();
+				if(checkNext instanceof ICollider) {
+					ICollider check = (ICollider) checkNext;
+					if(current.collidesWith(check)) {
+						valid=false;
+					}
+				}
 			}
-			break;
-		case Station:
-			objectList.add(new Station());
-			break;
-		default:
-			System.err.println("Invalid input.");
-			return;
-		
 		}
+		//after loop is exited, can safely spawn in objects
+		objectList.add(newObject);
 		this.setChanged();
 		this.notifyObservers(new GameWorldProxy(this));
 	}
@@ -514,15 +531,7 @@ public class GameWorld extends Observable implements IGameWorld{
 			music.pause();
 		}
 	}
-	/*
-	public void pauseMusic() {
-		music.pause();
-	}
-	public void unpauseMusic() {
-		if(sound)
-			music.play();
-	}
-*/
+	
 	public GameObject getSelectedObject() {
 		IIterator it=objectList.getIterator();
 		Object obj;

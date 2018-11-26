@@ -63,7 +63,6 @@ public class NPS extends Ship{
 	@Override
 	public boolean handleCollision(ICollider otherObject, GameWorld gw) {
 		boolean destroy=false;
-		//System.out.println("NPS collided with "+otherObject);
 		if(otherObject instanceof Asteroid) {
 			destroy=true;
 			gw.playExplosion();

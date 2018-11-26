@@ -7,7 +7,6 @@ public class PlayerMissile extends Missile {
 	public PlayerMissile(MissileLauncher ml) {
 		super(ml);
 		setColor(ColorUtil.WHITE);
-		System.out.println(this);
 	}
 	public String toString() {
 		return "PS's Missile: " + super.toString();
@@ -19,7 +18,6 @@ public class PlayerMissile extends Missile {
 	 */
 	@Override
 	public boolean handleCollision(ICollider otherObject, GameWorld gw) {
-		System.out.println("PSMissile collision detected with "+otherObject);
 		if(otherObject instanceof Asteroid || otherObject instanceof NPS)
 			gw.addPoint(((GameObject) otherObject).getSize()*10);
 		if(otherObject instanceof PlayerMissile)

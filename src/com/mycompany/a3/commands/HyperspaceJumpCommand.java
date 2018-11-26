@@ -14,7 +14,10 @@ public class HyperspaceJumpCommand extends Command {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		gw.hyperspaceJump();
+		 if (e.getKeyEvent() != -1) { 
+			 gw.hyperspaceJump();
+			 System.out.println("Activating hyperspace jump");
+		 }
 	}
 
 }
